@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,21 +45,62 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
+    <Reference Include="Il2Cppmscorlib, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\Il2Cppmscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppNewtonsoft.Json">
+      <HintPath>Libs\Il2CppNewtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppSystem.Runtime.Serialization">
+      <HintPath>Libs\Il2CppSystem.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppSystem.Xml">
+      <HintPath>Libs\Il2CppSystem.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppSystem.Xml.Linq">
+      <HintPath>Libs\Il2CppSystem.Xml.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="MelonLoader, Version=0.5.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\MelonLoader.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="UnhollowerBaseLib, Version=0.4.18.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\UnhollowerBaseLib.dll</HintPath>
+    </Reference>
+    <Reference Include="UnhollowerRuntimeLib, Version=0.4.10.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\UnhollowerRuntimeLib.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.InputSystem, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\Unity.InputSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Localization, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\Unity.Localization.dll</HintPath>
     </Reference>
     <Reference Include="Unity.ResourceManager, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -107,8 +150,22 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\UnityEngine.UIModule.dll</HintPath>
     </Reference>
+    <Reference Include="UniverseLib.IL2CPP.Unhollower, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\UniverseLib.IL2CPP.Unhollower.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Callbacks.cs" />
+    <Compile Include="GUI.cs" />
+    <Compile Include="Patches\PauseMenuRoot_Awake.cs" />
+    <Compile Include="Patches\MainMenuLandingRootUI_Init.cs" />
+    <Compile Include="UIElements\Button.cs" />
+    <Compile Include="UIElements\StackPanel.cs" />
+    <Compile Include="UIElements\Label.cs" />
+    <Compile Include="UIElements\Switch.cs" />
+    <Compile Include="UIElements\UIContainer.cs" />
+    <Compile Include="UIElements\UIElement.cs" />
     <Compile Include="TarrMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -116,8 +173,12 @@
     <Content Include="Libs\0Harmony.dll" />
     <Content Include="Libs\Assembly-CSharp-firstpass.dll" />
     <Content Include="Libs\Assembly-CSharp.dll" />
+    <Content Include="Libs\Il2Cppmscorlib.dll" />
     <Content Include="Libs\MelonLoader.dll" />
+    <Content Include="Libs\UnhollowerBaseLib.dll" />
+    <Content Include="Libs\UnhollowerRuntimeLib.dll" />
     <Content Include="Libs\Unity.InputSystem.dll" />
+    <Content Include="Libs\Unity.Localization.dll" />
     <Content Include="Libs\Unity.ResourceManager.dll" />
     <Content Include="Libs\Unity.TextMeshPro.dll" />
     <Content Include="Libs\UnityEngine.CoreModule.dll" />
@@ -130,9 +191,11 @@
     <Content Include="Libs\UnityEngine.UI.dll" />
     <Content Include="Libs\UnityEngine.UIElementsModule.dll" />
     <Content Include="Libs\UnityEngine.UIModule.dll" />
+    <Content Include="Libs\UniverseLib.IL2CPP.Unhollower.dll" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="GUI\" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

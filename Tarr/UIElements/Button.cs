@@ -7,7 +7,6 @@ using UnityEngine;
 
 namespace Tarr.UIElements {
     public class Button : UIElement {
-        private static GameObject prefab;
         public string Text;
         public Action OnClick;
         public override GameObject Instantiate(Transform parent) {

@@ -7,10 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Tarr.Patches {
-    [HarmonyPatch(typeof(MainMenuLandingRootUI), "Init")]
-    class MainMenuLandingRootUI_Init {
+    [HarmonyPatch(typeof(MainMenuLandingRootUI))]
+    class MainMenuLandingRootUIPatch {
         public static bool isReopened = false;
-        static void Postfix(MainMenuLandingRootUI __instance) {
+        [HarmonyPostfix]
+        [HarmonyPatch("Init")]
+        static void InitPostfix(MainMenuLandingRootUI __instance) {
             if(isReopened) return;
             isReopened = true;
             Callbacks.OnMainMenuOpen(__instance);

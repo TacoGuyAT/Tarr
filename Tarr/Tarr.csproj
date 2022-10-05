@@ -158,8 +158,8 @@
   <ItemGroup>
     <Compile Include="Callbacks.cs" />
     <Compile Include="GUI.cs" />
-    <Compile Include="Patches\PauseMenuRoot_Awake.cs" />
-    <Compile Include="Patches\MainMenuLandingRootUI_Init.cs" />
+    <Compile Include="Patches\PauseMenuDirectorPatch.cs" />
+    <Compile Include="Patches\MainMenuLandingRootUIPatch.cs" />
     <Compile Include="UIElements\Button.cs" />
     <Compile Include="UIElements\StackPanel.cs" />
     <Compile Include="UIElements\Label.cs" />

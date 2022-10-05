@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Tarr.UIElements {
     public abstract class UIElement {
+        public GameObject prefab;
         public abstract GameObject Instantiate(Transform parent);
     }
     public enum UIOrientation {

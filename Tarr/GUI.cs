@@ -2,21 +2,14 @@
 using Il2CppMonomiPark.SlimeRancher.UI;
 using Il2CppMonomiPark.SlimeRancher.UI.MainMenu;
 using Il2CppMonomiPark.SlimeRancher.UI.Popup;
-using Il2CppNewtonsoft.Json;
-using Il2CppNewtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
-using Tarr.UIElements;
 using TMPro;
 using UnhollowerRuntimeLib;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.Localization;
-using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 
 namespace Tarr {
@@ -24,13 +17,10 @@ namespace Tarr {
         /// <summary>
         /// Creates basic GUI with title, text and two buttons
         /// </summary>
-        /// <param name="title">Title.</param>
-        /// <param name="message">Message.</param>
-        /// <param name="positiveButton">Leave empty for localized "Ok"</param>
-        /// <param name="positiveAction">On first button click</param>
-        /// <param name="negativeButton">Leave null to ignore. Leave empty for localized "Cancel"</param>
-        /// <param name="negativeAction">On second button click</param>
-        public static GameObject CreateBasic(
+        /// <param name="positiveButton">Leave empty for localized "OK"</param>
+        /// <param name="negativeButton">Leave null to not initialize the button. Leave empty for localized "Cancel"</param>
+        // TODO: Add same thing for PositiveNegativePopupPromptConfig (aka localized edition)
+        public static MainMenuLandingRootUI CreateBasic(
             string title,
             string message,
             string positiveButton,
@@ -48,7 +38,7 @@ namespace Tarr {
 
             LocalizedString countdownL = LocalizationUtil.CreateByKey("UI", "b.unavailable");
 
-            GameObject gui;
+            GameObject gui_gameobject;
 
             if(negativeButton == null) {
                 PositivePopupPromptConfig config = new PositivePopupPromptConfig {
@@ -63,7 +53,7 @@ namespace Tarr {
                     countdownHeader = countdownL,
                     positiveButtonText = positiveL,
                 };
-                gui = SRSingleton<GameContext>.Instance.UITemplates.CreatePositivePopupPrompt(config, positiveAction);
+                gui_gameobject = SRSingleton<GameContext>.Instance.UITemplates.CreatePositivePopupPrompt(config, positiveAction);
             } else {
                 PositiveNegativePopupPromptConfig config = new PositiveNegativePopupPromptConfig {
                     shouldDimBackground = dimBackground,
@@ -78,23 +68,26 @@ namespace Tarr {
                     positiveButtonText = positiveL,
                     negativeButtonText = negativeL,
                 };
-                gui = SRSingleton<GameContext>.Instance.UITemplates.CreatePositiveNegativePopupPrompt(config, positiveAction, negativeAction);
+                gui_gameobject = SRSingleton<GameContext>.Instance.UITemplates.CreatePositiveNegativePopupPrompt(config, positiveAction, negativeAction);
             }
 
-            gui.GetComponent<PopupPrompt>().titleText.text = title;
-            gui.GetComponent<PopupPrompt>().messageText.text = message;
-            gui.GetComponent<PopupPrompt>().warningText.text = "";
+            var gui = gui_gameobject.GetComponent<MainMenuLandingRootUI>();
+
+            gui_gameobject.GetComponent<PopupPrompt>().titleText.text = title;
+            gui_gameobject.GetComponent<PopupPrompt>().messageText.text = message;
+            gui_gameobject.GetComponent<PopupPrompt>().warningText.text = "";
             if(positiveButton != null && positiveButton != "")
-                gui.GetComponent<PopupPrompt>().positiveActionButtonText.text = positiveButton;
+                gui_gameobject.GetComponent<PopupPrompt>().positiveActionButtonText.text = positiveButton;
             if(negativeButton != null && negativeButton != "")
-                gui.GetComponent<PopupPrompt>().negativeActionButtonText.text = negativeButton;
+                gui_gameobject.GetComponent<PopupPrompt>().negativeActionButtonText.text = negativeButton;
+
             return gui;
         }
         public static void CreateList(string title, string text, Action<string> selected = null) {
 
         }
-        public static void CreateCustom(string title, UIElement child) {
-
+        public static void CreateCustom(string title, UIElements.UIElement content) {
+                                 //  maybe it should only have content field  ^
         }
         /// <summary>
         /// Adds custom main menu buttons

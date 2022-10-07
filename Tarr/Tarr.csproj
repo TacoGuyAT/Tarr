@@ -158,6 +158,7 @@
   <ItemGroup>
     <Compile Include="Callbacks.cs" />
     <Compile Include="GUI.cs" />
+    <Compile Include="Loaders\TarrMelon.cs" />
     <Compile Include="Patches\PauseMenuDirectorPatch.cs" />
     <Compile Include="Patches\MainMenuLandingRootUIPatch.cs" />
     <Compile Include="UIElements\Button.cs" />

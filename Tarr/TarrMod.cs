@@ -1,54 +1,33 @@
 ﻿using MelonLoader;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using uGUI = UnityEngine.GUI;
 using OHarmony = HarmonyLib.Harmony;
 using Il2CppMonomiPark.SlimeRancher.Player.CharacterController.Abilities;
 using Il2CppMonomiPark.SlimeRancher.Player.CharacterController;
-using UnhollowerRuntimeLib;
-
-[assembly: MelonInfo(typeof(Tarr.TarrMod), "Tarr", "0.1.0", "__tacoguy", "https://github.com/TacoGuyAT/Tarr")]
-[assembly: MelonColor(ConsoleColor.DarkMagenta)]
+using Tarr.Loaders;
 
 namespace Tarr {
-    public class TarrMod : MelonMod {
-        public override void OnInitializeMelon() {
-            UniverseLib.Universe.Init();
-            GetHarmony().PatchAll();
-            Callbacks.OnMainMenuOpenEvent += (m) => {
-                GUI.AddMainMenuButton(m, () => { GUI.CreateBasic("Mods", "doing...", ""); }, "Mods", null, -2);
-            };
-            Log("Hello, cruel world!");
-        }
-        public override void OnSceneWasLoaded(int buildIndex, string sceneName) {
-            if(sceneName.Contains("MainMenuUI"))
-                Patches.MainMenuLandingRootUIPatch.isReopened = false;
-        }
-        public override void OnGUI() {
-            if(uGUI.Button(new Rect(10, 210, 80, 24), "Create GUI")) {
-                GUI.CreateBasic(
-                    "Sample text",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque faucibus fermentum efficitur. Cras cursus justo id leo mattis gravida. Nam eget elit a diam suscipit ullamcorper. Sed vitae egestas arcu. Mauris ultricies eleifend quam a egestas. Praesent euismod eros ex, in tristique purus euismod et. Maecenas porttitor ipsum pellentesque orci maximus fermentum.",
-                    "GUI!",
-                    new Action(() => Log("Clicked OK"))
-                    );
-            }
-            if(uGUI.Button(new Rect(10, 238, 80, 24), "No Clip")) {
+    public class TarrMod : MonoBehaviour {
+        public TarrMod(IntPtr ptr) : base(ptr) { }
+        public void OnGUI() {
+            if(uGUI.Button(new Rect(10, 10, 80, 24), "No Clip")) {
                 DebugFlyAbilityBehavior dfab = SRSingleton<SceneContext>.Instance.player.GetComponent<SRCharacterController>().GetAbility<DebugFlyAbilityBehavior>();
+                if(dfab == null) Info("a");
+                Dump(dfab);
                 dfab.IsActive = true;
-                dfab.Start();
+                dfab.abilityData.flySpeed = 1;
+                dfab.flyUp = true;
             }
-        }
-        public static OHarmony GetHarmony() {
-            return Melon<TarrMod>.Instance.HarmonyInstance;
         }
         // https://stackoverflow.com/a/35658387
         public static void Dump(Il2CppSystem.Object obj) {
-            var props = obj.GetIl2CppType().GetProperties(Il2CppSystem.Reflection.BindingFlags.Default);
+            var props = obj.GetIl2CppType().GetProperties(
+                Il2CppSystem.Reflection.BindingFlags.NonPublic |
+                Il2CppSystem.Reflection.BindingFlags.Public
+                );
             StringBuilder sb = new StringBuilder();
             foreach(var item in props) {
                 sb.Append($"\n{item.Name}: {item.GetValue(obj, null)};");
@@ -65,21 +44,47 @@ namespace Tarr {
             sb.AppendLine();
             Console.WriteLine(sb.ToString());
         }
-        public static void Log(object obj, LogLevel level = LogLevel.Information) {
+        public static void Log(LogLevel level = LogLevel.Information, params object[] obj) {
+            var result = String.Join(" ", obj.Select((x) => x.ToString()));
             switch(level) {
                 case LogLevel.Warning:
-                    Melon<TarrMod>.Logger.Warning(obj);
+                    Melon<TarrMelon>.Logger.Warning(result);
                     break;
                 case LogLevel.Error:
-                    Melon<TarrMod>.Logger.Error(obj);
+                    Melon<TarrMelon>.Logger.Error(result);
                     break;
                 case LogLevel.Critical:
-                    Melon<TarrMod>.Logger.Error(obj);
+                    Melon<TarrMelon>.Logger.Error(result);
                     break;
                 default:
-                    Melon<TarrMod>.Logger.Msg(obj);
+                    Melon<TarrMelon>.Logger.Msg(result);
                     break;
             }
+        }
+        public static void LogFormat(LogLevel level = LogLevel.Information, string format = "", params object[] obj) {
+            Log(level, String.Format(format, obj));
+        }
+        public static void Info(params object[] obj) {
+            Log(LogLevel.Information, obj);
+        }
+        public static void Warning(params object[] obj) {
+            Log(LogLevel.Warning, obj);
+        }
+        public static void Error(params object[] obj) {
+            Log(LogLevel.Error, obj);
+        }
+        public static void InfoFormat(string format, params object[] obj) {
+            LogFormat(LogLevel.Information, format, obj);
+        }
+        public static void WarningFormat(string format, params object[] obj) {
+            LogFormat(LogLevel.Warning, format, obj);
+        }
+        public static void ErrorFormat(string format, params object[] obj) {
+            LogFormat(LogLevel.Error, format, obj);
+        }
+        public static void AssertFormat(bool condition, string format, params object[] obj) {
+            if(condition)
+                LogFormat(LogLevel.Information, format, obj);
         }
     }
     public enum LogLevel {
